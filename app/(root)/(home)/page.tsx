@@ -8,67 +8,12 @@ import { HomePageFilters } from '@/constants/filters';
 import HomeFilters from '@/components/home/HomeFilters';
 import NoResults from '@/components/shared/NoResults';
 import QuestionCard from '@/components/cards/QuestionCard';
-const questions = [
-	{
-		_id: 'q123',
-		title: 'How to fix a memory leak in JavaScript?',
-		tags: [
-			{ _id: 't1', name: 'JavaScript' },
-			{ _id: 't2', name: 'MemoryLeak' },
-			{ _id: 't3', name: 'Debugging' },
-		],
-		author: {
-			_id: 'a1',
-			name: 'Jane Doe',
-			picture: 'https://example.com/picture.jpg',
-		},
-		upvotes: 150,
-		views: 1200,
-		answers: [
-			{
-				text: 'First, identify the leak...',
-				user: 'John Doe',
-				createdAt: new Date(),
-			},
-			{
-				text: 'Use Chrome DevTools to...',
-				user: 'Alice Smith',
-				createdAt: new Date(),
-			},
-		],
-		createdAt: new Date('2023-01-01'),
-	},
-	{
-		_id: 'q456',
-		title: 'What is the best way to learn TypeScript?',
-		tags: [
-			{ _id: 't4', name: 'TypeScript' },
-			{ _id: 't5', name: 'Learning' },
-			{ _id: 't6', name: 'Programming' },
-		],
-		author: {
-			_id: 'a2',
-			name: 'Bob Brown',
-			picture: 'https://example.com/picture2.jpg',
-		},
-		upvotes: 95,
-		views: 800,
-		answers: [
-			{
-				text: 'Start with the basics...',
-				user: 'Cathy Green',
-				createdAt: new Date(),
-			},
-			{
-				text: 'The official TypeScript documentation...',
-				user: 'Dave Blue',
-				createdAt: new Date(),
-			},
-		],
-		createdAt: new Date('2023-02-15'),
-	},
-];
-export default function Home() {
+import { getQuestions } from '@/lib/actions/question.action';
+
+export default async function Home() {
+	const result = await getQuestions({});
+	console.log(result.questions);
+
 	return (
 		<>
 			<div className='flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center'>
@@ -100,8 +45,8 @@ export default function Home() {
 			</div>
 			<HomeFilters />
 			<div className='mt-10 flex w-full flex-col gap-6'>
-				{questions.length > 0 ? (
-					questions.map((question) => (
+				{result.questions.length > 0 ? (
+					result.questions.map((question) => (
 						<QuestionCard
 							key={question._id}
 							_id={question._id}
