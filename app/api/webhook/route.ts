@@ -22,6 +22,13 @@
  * @format
  */
 
+/**
+ * eslint-disable camelcase
+ *
+ * @format
+ */
+
+/* eslint-disable */
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
