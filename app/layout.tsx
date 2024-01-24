@@ -4,6 +4,12 @@
  * @format
  */
 
+/**
+ * eslint-disable camelcase
+ *
+ * @format
+ */
+
 import './globals.css';
 import '../styles/prism.css';
 import React from 'react';
