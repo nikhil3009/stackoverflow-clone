@@ -3,7 +3,6 @@
  *
  * @format
  */
-/* eslint-disable */
 
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';

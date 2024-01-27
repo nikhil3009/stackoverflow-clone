@@ -2,6 +2,8 @@
 
 // import UserCard from "@/components/cards/UserCard";
 import Filter from '@/components/shared/Filter';
+import NoResult from '@/components/shared/NoResult';
+import Pagination from '@/components/shared/Pagination';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { TagFilters } from '@/constants/filters';
 import { getAllTags } from '@/lib/actions/tag.actions';
@@ -58,9 +60,21 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
 						</Link>
 					))
 				) : (
-					<></>
+					<NoResult
+						title='No Tags Found'
+						description='It looks like there are no tags found.'
+						link='/ask-question'
+						linkTitle='Ask a question'
+					/>
 				)}
 			</section>
+
+			<div className='mt-10'>
+				<Pagination
+					pageNumber={searchParams?.page ? +searchParams.page : 1}
+					isNext={result.isNext}
+				/>
+			</div>
 		</>
 	);
 };
