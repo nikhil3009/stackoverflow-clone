@@ -12,7 +12,7 @@ interface Props {
 	linkTitle: string;
 }
 
-const NoResults = ({ title, description, link, linkTitle }: Props) => {
+const NoResult = ({ title, description, link, linkTitle }: Props) => {
 	return (
 		<div className='mt-10 flex w-full flex-col items-center justify-center'>
 			<Image
@@ -45,4 +45,4 @@ const NoResults = ({ title, description, link, linkTitle }: Props) => {
 	);
 };
 
-export default NoResults;
+export default NoResult;

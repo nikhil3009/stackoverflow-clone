@@ -3,8 +3,10 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import parse from 'html-react-parser';
+
 import Prism from 'prismjs';
+import parse from 'html-react-parser';
+
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-c';

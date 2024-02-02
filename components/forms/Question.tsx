@@ -20,28 +20,34 @@ import { Button } from '../ui/button';
 import { QuestionsSchema } from '@/lib/validations';
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
-import { useTheme } from '@/context/ThemeProvider';
-import { createQuestion } from '@/lib/actions/question.action';
+import { createQuestion, editQuestion } from '@/lib/actions/question.action';
 import { useRouter, usePathname } from 'next/navigation';
+import { useTheme } from '@/context/ThemeProvider';
 
-const type: any = 'create';
 interface Props {
+	type?: string;
 	mongoUserId: string;
+	questionDetails?: string;
 }
 
-const Question = ({ mongoUserId }: Props) => {
+const Question = ({ type, mongoUserId, questionDetails }: Props) => {
 	const { mode } = useTheme();
 	const editorRef = useRef(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const router = useRouter();
 	const pathname = usePathname();
 
+	const parsedQuestionDetails =
+		questionDetails && JSON.parse(questionDetails || '');
+
+	const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
+
 	const form = useForm<z.infer<typeof QuestionsSchema>>({
 		resolver: zodResolver(QuestionsSchema),
 		defaultValues: {
-			title: ' ',
-			explanation: ' ',
-			tags: [],
+			title: parsedQuestionDetails?.title || '',
+			explanation: parsedQuestionDetails?.content || '',
+			tags: groupedTags || [],
 		},
 	});
 
@@ -49,14 +55,24 @@ const Question = ({ mongoUserId }: Props) => {
 		setIsSubmitting(true);
 
 		try {
-			await createQuestion({
-				title: values.title,
-				content: values.explanation,
-				tags: values.tags,
-				author: JSON.parse(mongoUserId),
-				path: pathname,
-			});
-			router.push('/');
+			if (type === 'Edit') {
+				await editQuestion({
+					questionId: parsedQuestionDetails._id,
+					title: values.title,
+					content: values.explanation,
+					path: pathname,
+				});
+				router.push(`/question/${parsedQuestionDetails._id}`);
+			} else {
+				await createQuestion({
+					title: values.title,
+					content: values.explanation,
+					tags: values.tags,
+					author: JSON.parse(mongoUserId),
+					path: pathname,
+				});
+				router.push('/');
+			}
 		} catch (error) {
 		} finally {
 			setIsSubmitting(false);
@@ -143,7 +159,7 @@ const Question = ({ mongoUserId }: Props) => {
 									}}
 									onBlur={field.onBlur}
 									onEditorChange={(content) => field.onChange(content)}
-									initialValue={''}
+									initialValue={parsedQuestionDetails?.content || ''}
 									init={{
 										height: 350,
 										menubar: false,
@@ -239,9 +255,9 @@ const Question = ({ mongoUserId }: Props) => {
 					className='primary-gradient w-fit !text-light-900'
 					disabled={isSubmitting}>
 					{isSubmitting ? (
-						<>{type === 'edit' ? 'Editing...' : 'Posting...'}</>
+						<>{type === 'Edit' ? 'Editing...' : 'Posting...'}</>
 					) : (
-						<>{type === 'edit' ? 'Edit Question' : 'Ask a Question'}</>
+						<>{type === 'Edit' ? 'Edit Question' : 'Ask a Question'}</>
 					)}
 				</Button>
 			</form>

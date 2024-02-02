@@ -12,6 +12,7 @@ import {
 } from './shared.types';
 import Question from '@/database/question.model';
 import { revalidatePath } from 'next/cache';
+import Interaction from '@/database/interaction.model';
 import User from '@/database/user.model';
 
 export async function createAnswer(params: CreateAnswerParams) {
@@ -25,6 +26,14 @@ export async function createAnswer(params: CreateAnswerParams) {
 		// Add the answer to the question's answers array
 		const questionObject = await Question.findByIdAndUpdate(question, {
 			$push: { answers: newAnswer._id },
+		});
+
+		await Interaction.create({
+			user: author,
+			action: 'answer',
+			question,
+			answer: newAnswer._id,
+			tags: questionObject.tags,
 		});
 
 		await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
@@ -186,6 +195,7 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
 			{ _id: answer.question },
 			{ $pull: { answers: answerId } }
 		);
+		await Interaction.deleteMany({ answer: answerId });
 
 		revalidatePath(path);
 	} catch (error) {
