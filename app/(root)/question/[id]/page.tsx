@@ -2,7 +2,7 @@
 
 import Answer from '@/components/forms/Answer';
 import AllAnswers from '@/components/shared/AllAnswers';
-import Metric from '@/components/shared/Metric';
+import Metrics from '@/components/shared/Metrics';
 import ParseHTML from '@/components/shared/ParseHTML';
 import RenderTag from '@/components/shared/RenderTag';
 import Votes from '@/components/shared/Votes';
@@ -62,21 +62,21 @@ const Page = async ({ params, searchParams }: any) => {
 			</div>
 
 			<div className='mb-8 mt-5 flex flex-wrap gap-4'>
-				<Metric
+				<Metrics
 					imgUrl='/assets/icons/clock.svg'
 					alt='clock icon'
 					value={` asked ${getTimestamp(result.createdAt)}`}
 					title=' Asked'
 					textStyles='small-medium text-dark400_light800'
 				/>
-				<Metric
+				<Metrics
 					imgUrl='/assets/icons/message.svg'
 					alt='message'
 					value={formatAndDivideNumber(result.answers.length)}
 					title=' Answers'
 					textStyles='small-medium text-dark400_light800'
 				/>
-				<Metric
+				<Metrics
 					imgUrl='/assets/icons/eye.svg'
 					alt='eye'
 					value={formatAndDivideNumber(result.views)}
