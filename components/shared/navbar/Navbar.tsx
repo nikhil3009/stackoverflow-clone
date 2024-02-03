@@ -22,7 +22,7 @@ function Navbar() {
 				/>
 
 				<p className='h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden'>
-					Fake <span className='text-primary-500'>Overflow</span>
+					Query <span className='text-primary-500'>Overflow</span>
 				</p>
 			</Link>
 
